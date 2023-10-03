@@ -3,29 +3,23 @@ using System.Data.SqlClient;
 
 namespace Quetulio.Services
 {
-    public class productsService
+    public class productsService : IproductsService
     {
-        private static string db_source = "quetulio.database.windows.net";
+        private readonly IConfiguration _config;
 
-        private static string db_user = "appsdev_sa";
-
-        private static string db_password = "Thr33c0m@12";
-
-        private static string db_database = "quetuliodb";
+        public productsService(IConfiguration config)
+        {
+            _config = config;
+        }
 
         private SqlConnection GetConnection()
         {
-            var _builder = new SqlConnectionStringBuilder();
-            _builder.DataSource = db_source;
-            _builder.UserID = db_user;
-            _builder.Password = db_password;
-            _builder.InitialCatalog = db_database;
-            return new SqlConnection( _builder.ConnectionString);
+            return new SqlConnection(_config.GetConnectionString("SQLConnection"));
         }
 
-        public  List<products> GetProducts()
+        public List<products> GetProducts()
         {
-            SqlConnection conn= GetConnection();
+            SqlConnection conn = GetConnection();
             List<products> _productist = new List<products>();
 
             string statement = "select * from products";
@@ -35,7 +29,8 @@ namespace Quetulio.Services
             SqlCommand cmd = new SqlCommand(statement, conn);
 
             using (SqlDataReader reader = cmd.ExecuteReader())
-            {  while(reader.Read())
+            {
+                while (reader.Read())
                 {
                     products prd = new products()
                     {

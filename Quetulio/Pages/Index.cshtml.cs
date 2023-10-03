@@ -11,11 +11,15 @@ namespace Quetulio.Pages
 
         public List<products> Prods;
 
+        private readonly IproductsService _prodserv;
+        public IndexModel(IproductsService prodserv)
+        {
+            _prodserv=prodserv; 
+        }
 
         public void OnGet()
-        {
-            productsService prdsrvs = new productsService(); 
-            Prods = prdsrvs.GetProducts();
+        { 
+            Prods = _prodserv.GetProducts();
         }
     }
 }

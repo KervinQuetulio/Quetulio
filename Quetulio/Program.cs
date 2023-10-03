@@ -1,8 +1,9 @@
 using Quetulio.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args); 
 
-builder.Services.AddTransient<IproductsService>();
+builder.Services.AddTransient<IproductsService, productsService>();
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
